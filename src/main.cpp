@@ -1,36 +1,27 @@
 #include <Arduino.h>
 
-// Function declaration (prototype)
-int myFunction(int, int);
+// Using standard modern C++ practice: Define the hardware pin as a constant expression
+const int EXTERNAL_LED_PIN = 7;
 
 void setup() {
-  // Initialize the USB-C serial connection at 115200 baud rate
-  Serial.begin(115200);
+  // Initialize communication for debugging
+  // Serial.begin(115200);
+  // while (!Serial && millis() < 3000);
+
+  // Configure digital pin 2 to supply voltage out to the breadboard
+    "$HOME/.platformio/penv/bin/pio" device monitor -b 115200pinMode(EXTERNAL_LED_PIN, OUTPUT);
   
-  // Wait up to 3 seconds for the serial port to open (crucial for native USB boards like Uno R4)
-  while (!Serial && millis() < 3000); 
-
-  // Configure the built-in LED pin as an output
-  pinMode(LED_BUILTIN, OUTPUT);
-
-  // Call your custom function and store the value
-  int result = myFunction(2, 3);
-
-  // Print the math result to the Serial Monitor
-  Serial.println("--- Uno R4 Minima Booted Successfully ---");
-  Serial.print("The result of myFunction(2, 3) is: ");
-  Serial.println(result);
+  Serial.println("--- Breadboard LED Controller Initialized ---");
 }
 
 void loop() {
-  // Visual heartbeat: Blink the onboard LED continuously
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(200);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(200);
-}
+  // Turn the external breadboard LED on
+  digitalWrite(EXTERNAL_LED_PIN, HIGH);
+  Serial.println("Breadboard LED Status: ON");
+  delay(2000); // Wait 2 second
 
-// Function definition (implementation)
-int myFunction(int x, int y) {
-  return x + y;
+  // Turn the external breadboard LED off
+  digitalWrite(EXTERNAL_LED_PIN, LOW);
+  Serial.println("Breadboard LED Status: OFF");
+  delay(1000); // Wait 1 second
 }
